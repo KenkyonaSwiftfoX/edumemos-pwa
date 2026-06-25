@@ -1,0 +1,22 @@
+{
+  "name": "EduMémos - Le Flux de la Promo",
+  "short_name": "EduMémos",
+  "description": "Application d'entraide et de partage de mémos pour la promotion, accessible hors connexion.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
