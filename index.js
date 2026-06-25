@@ -2,9 +2,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --- ENREGISTREMENT DU SERVICE WORKER ---
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("./sw.js")
+      .register("/edumemos/sw.js", { scope: "/edumemos/" }) // On définit explicitement le scope
       .then((reg) =>
-        console.log("Service Worker enregistré avec succès !", reg),
+        console.log(
+          "Service Worker enregistré dans edumemos avec scope !",
+          reg,
+        ),
       )
       .catch((err) =>
         console.warn("Erreur d'enregistrement du Service Worker", err),
@@ -20,13 +23,23 @@ document.addEventListener("DOMContentLoaded", function () {
     if (Notification.permission === "granted") {
       const options = {
         body: message,
-        icon: "./icons/icon-192.png", // L'icône de ta PWA s'affichera dans la notification
-        vibrate: [200, 100, 200], // Fait vibrer le téléphone (si supporté)
-        badge: "./icons/icon-192.png", // Petite icône dans la barre de statut Android
+        icon: "./icons/icon-192.png",
+        vibrate: [200, 100, 200],
+        badge: "./icons/icon-192.png",
+        data: {
+          url: window.location.href, // Permet de réouvrir l'app si on clique sur la notification
+        },
       };
 
-      // Déclenche la notification native
-      new Notification(title, options);
+      // EN PRODUCTION : On demande au Service Worker actif d'afficher la notification
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification(title, options);
+        });
+      } else {
+        // Fallback au cas où le service worker n'est pas prêt
+        new Notification(title, options);
+      }
     }
   }
 
